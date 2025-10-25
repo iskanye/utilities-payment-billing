@@ -1,0 +1,8 @@
+postgre:
+  port: 5432
+  user: "admin"
+  password: "admin"
+  db_name: "billing"
+grpc:
+  port: 44044
+  timeout: 5s

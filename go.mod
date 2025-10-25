@@ -5,6 +5,7 @@ go 1.25.3
 require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
 	github.com/iskanye/utilities-payment-proto v0.0.0-20251024213901-be23281cbbb9
+	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.76.0
 )
 
