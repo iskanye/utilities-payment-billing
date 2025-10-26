@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS bills
 (
-    id      INTEGER PRIMARY KEY AUTOINCREMENT,
-    address TEXT,
-    amount  INTEGER
+    id          SERIAL PRIMARY KEY,
+    address     TEXT,
+    amount      INTEGER,
+    due_date    DATE
 );

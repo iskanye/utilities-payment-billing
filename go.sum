@@ -41,6 +41,10 @@ github.com/hashicorp/errwrap v1.1.0 h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY
 github.com/hashicorp/errwrap v1.1.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
 github.com/hashicorp/go-multierror v1.1.1 h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
+github.com/iskanye/utilities-payment v0.0.0-20251026184125-c59d3e32ac94 h1:IOeEbkEFIzUYa8XToC7obZYJPZwhUlz730Q/WXJW8sE=
+github.com/iskanye/utilities-payment v0.0.0-20251026184125-c59d3e32ac94/go.mod h1:uvcQON/sQqH3EEUUbDDprKItbqhFzk2dJgSMjn5SEag=
+github.com/iskanye/utilities-payment v0.0.0-20251026185746-4556249a17d8 h1:OH85MNO0QuCkJBR2liKJZ/2ylJfIEjsDIXTQCYABAt0=
+github.com/iskanye/utilities-payment v0.0.0-20251026185746-4556249a17d8/go.mod h1:uvcQON/sQqH3EEUUbDDprKItbqhFzk2dJgSMjn5SEag=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251024213901-be23281cbbb9 h1:LLlt4SyD35Hb7HYMJwUa0Ok7xU6heB2I2WrD0IxwhFE=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251024213901-be23281cbbb9/go.mod h1:XqbqgqoMHARdS2/Vc76BijbWF/e89PgGO2FBv8uJl8A=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
