@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS bills
+(
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    address TEXT,
+    amount  INTEGER
+);

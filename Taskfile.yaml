@@ -1,0 +1,14 @@
+# ./Taskfile.yaml
+# See: https://taskfile.dev/api/  
+
+version: "3"  
+
+tasks:  
+  default:
+    cmds:
+      - task: db  
+  init_db:
+    aliases:
+      - db
+    cmds:
+      - go run ./cmd/migrator --uri="admin:admin@localhost:5432/billing" --migrations-path=migrations 
