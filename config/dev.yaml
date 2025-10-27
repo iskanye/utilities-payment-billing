@@ -4,6 +4,6 @@ postgre:
   password: "admin"
   db_name: "billing"
 grpc:
-  port: 44044
+  port: 44080
   timeout: 5s
 term: 1
