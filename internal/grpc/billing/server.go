@@ -4,13 +4,15 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
-	protoAuth "github.com/iskanye/utilities-payment-proto/billing"
+	protoBilling "github.com/iskanye/utilities-payment-proto/billing"
 )
 
 type serverAPI struct {
-	protoAuth.UnimplementedBillingServer
-	auth Billing
+	protoBilling.UnimplementedBillingServer
+	billing Billing
 }
 
 type Billing interface {
@@ -22,12 +24,26 @@ type Billing interface {
 }
 
 func Register(gRPCServer *grpc.Server, billing Billing) {
-	protoAuth.RegisterBillingServer(gRPCServer, &serverAPI{auth: billing})
+	protoBilling.RegisterBillingServer(gRPCServer, &serverAPI{billing: billing})
 }
 
 func (s *serverAPI) AddBill(
 	ctx context.Context,
-	in *protoAuth.Bill,
-) (*protoAuth.BillResponse, error) {
-	return &protoAuth.BillResponse{}, nil
+	in *protoBilling.Bill,
+) (*protoBilling.BillResponse, error) {
+	if in.Address == "" {
+		return nil, status.Error(codes.InvalidArgument, "address is required")
+	}
+	if in.Amount <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "amount must be positive")
+	}
+
+	billId, err := s.billing.AddBill(ctx, in.GetAddress(), int(in.GetAmount()))
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &protoBilling.BillResponse{
+		BillId: billId,
+	}, nil
 }

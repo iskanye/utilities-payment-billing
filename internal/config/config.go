@@ -5,6 +5,7 @@ import "time"
 type Config struct {
 	Postgre PostgreConfig `yaml:"postgre"`
 	GRPC    GRPCConfig    `yaml:"grpc"`
+	Term    int           `yaml:"term"` // in Months
 }
 
 type PostgreConfig struct {

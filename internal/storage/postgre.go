@@ -7,32 +7,36 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/iskanye/utilities-payment-billing/internal/config"
 	"github.com/iskanye/utilities-payment/pkg/models"
 	_ "github.com/lib/pq"
 )
 
 type Storage struct {
-	db *sql.DB
+	db   *sql.DB
+	term int // in Months
 }
 
 func New(
-	c *config.Config,
+	user string,
+	password string,
+	dbName string,
+	term int,
 ) (*Storage, error) {
 	const op = "storage.postgre.New"
 
 	connStr := fmt.Sprintf(
 		"user=%s password=%s dbname=%s sslmode=disable",
-		c.Postgre.User,
-		c.Postgre.Password,
-		c.Postgre.DBName,
+		user, password, dbName,
 	)
 	db, err := sql.Open("postgre", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return &Storage{db: db}, nil
+	return &Storage{
+		db:   db,
+		term: term,
+	}, nil
 }
 
 func (s *Storage) Stop() error {
@@ -51,7 +55,7 @@ func (s *Storage) CreateBill(
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	res, err := stmt.ExecContext(ctx, address, amount, time.Now().AddDate(0, 1, 0))
+	res, err := stmt.ExecContext(ctx, address, amount, time.Now().AddDate(0, s.term, 0))
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
