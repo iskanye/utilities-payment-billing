@@ -2,16 +2,19 @@ package billing
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
+	"github.com/iskanye/utilities-payment-billing/internal/storage"
 	"github.com/iskanye/utilities-payment/pkg/logger"
 	"github.com/iskanye/utilities-payment/pkg/models"
 )
 
 type Billing struct {
-	log         *slog.Logger
-	billCreator BillCreator
+	log           *slog.Logger
+	billCreator   BillCreator
+	billsProvider BillsProvider
 }
 
 type BillCreator interface {
@@ -32,10 +35,12 @@ type BillsProvider interface {
 func New(
 	log *slog.Logger,
 	billCreator BillCreator,
+	billsProvider BillsProvider,
 ) *Billing {
 	return &Billing{
-		log:         log,
-		billCreator: billCreator,
+		log:           log,
+		billCreator:   billCreator,
+		billsProvider: billsProvider,
 	}
 }
 
@@ -66,7 +71,7 @@ func (b *Billing) GetBills(
 	ctx context.Context,
 	address string,
 ) ([]models.Bill, error) {
-	const op = "Billing.GetBill"
+	const op = "Billing.GetBills"
 
 	log := b.log.With(
 		slog.String("op", op),
@@ -75,17 +80,16 @@ func (b *Billing) GetBills(
 
 	log.Info("attempting to get bill")
 
-	// TO BE IMPLEMENTED
-	/*bill, err := b.billProvider.GetBill(ctx, address)
+	bills, err := b.billsProvider.GetBills(ctx, address)
 	if err != nil {
-		if errors.Is(err, storage.ErrBillNotFound) {
-			log.Warn("bill not found: ", logger.Err(err))
-			return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+		if errors.Is(err, storage.ErrBillsNotFound) {
+			log.Warn("bills not found: ", logger.Err(err))
+			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
 		log.Error("failed to get bill: ", logger.Err(err))
-		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
-	}*/
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
 
-	return nil, nil
+	return bills, nil
 }

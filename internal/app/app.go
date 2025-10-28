@@ -25,7 +25,7 @@ func New(
 		panic(err)
 	}
 
-	billingService := billing.New(log, storage)
+	billingService := billing.New(log, storage, storage)
 	grpcApp := grpc.New(log, billingService, grpcPort)
 
 	return &App{

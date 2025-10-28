@@ -66,28 +66,37 @@ func (s *Storage) CreateBill(
 	return id, nil
 }
 
-func (s *Storage) GetBill(
+func (s *Storage) GetBills(
 	ctx context.Context,
-	billId int64,
-) (models.Bill, error) {
-	const op = "storage.postgre.CreateBill"
+	address string,
+) ([]models.Bill, error) {
+	const op = "storage.postgre.GetBills"
 
-	stmt, err := s.db.Prepare("SELECT address, amount, due_date FROM bills WHERE id = ?;")
+	stmt, err := s.db.Prepare("SELECT address, amount, due_date FROM bills WHERE address = $1;")
 	if err != nil {
-		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	row := stmt.QueryRowContext(ctx, billId)
-
-	var bill models.Bill
-	err = row.Scan(&bill.ID, &bill.Address, &bill.DueDate)
+	rows, err := stmt.QueryContext(ctx, address)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return models.Bill{}, fmt.Errorf("%s: %w", op, ErrBillNotFound)
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	defer rows.Close()
+	bills := make([]models.Bill, 0)
+
+	for rows.Next() {
+		var bill models.Bill
+		err = rows.Scan(&bill.Address, &bill.Amount, &bill.DueDate)
+		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				return nil, fmt.Errorf("%s: %w", op, ErrBillsNotFound)
+			}
+			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
-		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+		bills = append(bills, bill)
 	}
 
-	return bill, nil
+	return bills, nil
 }

@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	protoBilling "github.com/iskanye/utilities-payment-proto/billing"
+	"github.com/iskanye/utilities-payment/pkg/models"
 )
 
 type serverAPI struct {
@@ -20,7 +21,11 @@ type Billing interface {
 		ctx context.Context,
 		address string,
 		amount int,
-	) (bill_id int64, err error)
+	) (int64, error)
+	GetBills(
+		ctx context.Context,
+		address string,
+	) ([]models.Bill, error)
 }
 
 func Register(gRPCServer *grpc.Server, billing Billing) {
@@ -46,4 +51,26 @@ func (s *serverAPI) AddBill(
 	return &protoBilling.BillResponse{
 		BillId: billId,
 	}, nil
+}
+
+func (s *serverAPI) GetBills(
+	in *protoBilling.BillsRequest,
+	stream grpc.ServerStreamingServer[protoBilling.Bill],
+) error {
+	if in.Address == "" {
+		return status.Error(codes.InvalidArgument, "address is required")
+	}
+
+	bills, err := s.billing.GetBills(stream.Context(), in.GetAddress())
+	if err != nil {
+		return status.Error(codes.Internal, err.Error())
+	}
+
+	for _, i := range bills {
+		if err = stream.SendMsg(i); err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
+	}
+
+	return nil
 }
