@@ -67,7 +67,13 @@ func (s *serverAPI) GetBills(
 	}
 
 	for _, i := range bills {
-		if err = stream.SendMsg(i); err != nil {
+		id := i.ID
+		bill := &protoBilling.Bill{
+			BillId:  &id,
+			Address: i.Address,
+			Amount:  int32(i.Amount),
+		}
+		if err = stream.SendMsg(bill); err != nil {
 			return status.Error(codes.Internal, err.Error())
 		}
 	}

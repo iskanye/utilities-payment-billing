@@ -6,22 +6,22 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/golang-migrate/migrate/v4 v4.19.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
-	github.com/iskanye/utilities-payment v0.0.0-20251027222231-1967f168f132
-	github.com/iskanye/utilities-payment-proto v0.0.0-20251028210804-0a03375b3574
+	github.com/iskanye/utilities-payment v0.0.0-20251028123647-6a69b1318c4b
+	github.com/iskanye/utilities-payment-proto v0.0.0-20251028222752-6ed11e8274ae
 	github.com/lib/pq v1.10.9
 	github.com/stretchr/testify v1.10.0
 	google.golang.org/grpc v1.76.0
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/ilyakaznacheev/cleanenv v1.5.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/net v0.46.0 // indirect

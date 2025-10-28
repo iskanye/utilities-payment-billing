@@ -72,7 +72,7 @@ func (s *Storage) GetBills(
 ) ([]models.Bill, error) {
 	const op = "storage.postgre.GetBills"
 
-	stmt, err := s.db.Prepare("SELECT address, amount, due_date FROM bills WHERE address = $1;")
+	stmt, err := s.db.Prepare("SELECT id, address, amount, due_date FROM bills WHERE address = $1;")
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -87,7 +87,7 @@ func (s *Storage) GetBills(
 
 	for rows.Next() {
 		var bill models.Bill
-		err = rows.Scan(&bill.Address, &bill.Amount, &bill.DueDate)
+		err = rows.Scan(&bill.ID, &bill.Address, &bill.Amount, &bill.DueDate)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				return nil, fmt.Errorf("%s: %w", op, ErrBillsNotFound)
