@@ -22,7 +22,7 @@ func New(
 	dbName string,
 	term int,
 ) (*Storage, error) {
-	const op = "storage.postgre.New"
+	const op = "storage.postgres.New"
 
 	connStr := fmt.Sprintf(
 		"user=%s password=%s dbname=%s sslmode=disable",
@@ -48,7 +48,7 @@ func (s *Storage) CreateBill(
 	address string,
 	amount int,
 ) (int64, error) {
-	const op = "storage.postgre.CreateBill"
+	const op = "storage.postgres.CreateBill"
 
 	stmt, err := s.db.Prepare("INSERT INTO bills(address, amount, due_date) VALUES($1, $2, $3) RETURNING id")
 	if err != nil {
@@ -70,7 +70,7 @@ func (s *Storage) GetBills(
 	ctx context.Context,
 	address string,
 ) ([]models.Bill, error) {
-	const op = "storage.postgre.GetBills"
+	const op = "storage.postgres.GetBills"
 
 	stmt, err := s.db.Prepare("SELECT id, address, amount, due_date FROM bills WHERE address = $1;")
 	if err != nil {
