@@ -64,6 +64,10 @@ func (b *Billing) AddBill(
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
+	log.Info("created bill successfully",
+		slog.Int64("bill_id", billId),
+	)
+
 	return billId, nil
 }
 
@@ -90,6 +94,8 @@ func (b *Billing) GetBills(
 		log.Error("failed to get bill: ", logger.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
+
+	log.Info("successfully got bills")
 
 	return bills, nil
 }
