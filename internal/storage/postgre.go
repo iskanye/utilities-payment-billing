@@ -28,7 +28,7 @@ func New(
 		"user=%s password=%s dbname=%s sslmode=disable",
 		user, password, dbName,
 	)
-	db, err := sql.Open("postgre", connStr)
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -50,17 +50,15 @@ func (s *Storage) CreateBill(
 ) (int64, error) {
 	const op = "storage.postgre.CreateBill"
 
-	stmt, err := s.db.Prepare("INSERT INTO bills(address, amount, due_date) VALUES(?, ?, ?)")
+	stmt, err := s.db.Prepare("INSERT INTO bills(address, amount, due_date) VALUES($1, $2, $3) RETURNING id")
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	res, err := stmt.ExecContext(ctx, address, amount, time.Now().AddDate(0, s.term, 0))
-	if err != nil {
-		return 0, fmt.Errorf("%s: %w", op, err)
-	}
+	res := stmt.QueryRowContext(ctx, address, amount, time.Now().AddDate(0, s.term, 0))
 
-	id, err := res.LastInsertId()
+	var id int64
+	err = res.Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
@@ -74,7 +72,7 @@ func (s *Storage) GetBill(
 ) (models.Bill, error) {
 	const op = "storage.postgre.CreateBill"
 
-	stmt, err := s.db.Prepare("SELECT address, amount, due_date FROM bills WHERE id = ?")
+	stmt, err := s.db.Prepare("SELECT address, amount, due_date FROM bills WHERE id = ?;")
 	if err != nil {
 		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
 	}

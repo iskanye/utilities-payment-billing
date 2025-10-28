@@ -7,11 +7,14 @@ tasks:
   default:
     cmds:
       - task: billing  
+  billing:
+    deps:
+      - init_db
+    cmds:
+      - go run ./cmd/billing --config=./config/dev.yaml
+
   init_db:
     aliases:
       - db
     cmds:
-      - go run ./cmd/migrator --uri="admin:admin@localhost:5432/billing" --migrations-path=migrations 
-  billing:
-    cmds:
-      - go run ./cmd/billing --config=./config/dev.yaml
+      - go run ./cmd/migrator --uri="postgres:postgres@localhost:5432/postgres" --migrations-path=migrations 

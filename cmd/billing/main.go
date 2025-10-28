@@ -20,7 +20,7 @@ func main() {
 		cfg.Postgre.Password,
 		cfg.Postgre.DBName,
 		cfg.Term,
-		cfg.Postgre.Port,
+		cfg.GRPC.Port,
 	)
 
 	go func() {
