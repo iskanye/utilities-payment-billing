@@ -31,7 +31,6 @@ func New(
 			// logging.StartCall, logging.FinishCall,
 			logging.PayloadReceived, logging.PayloadSent,
 		),
-		// Add any other option (check functions starting with logging.With).
 	}
 
 	recoveryOpts := []recovery.Option{
@@ -45,6 +44,8 @@ func New(
 	gRPCServer := grpc.NewServer(grpc.ChainUnaryInterceptor(
 		recovery.UnaryServerInterceptor(recoveryOpts...),
 		logging.UnaryServerInterceptor(InterceptorLogger(log), loggingOpts...),
+	), grpc.ChainStreamInterceptor(
+		logging.StreamServerInterceptor(InterceptorLogger(log), loggingOpts...),
 	))
 
 	billing.Register(gRPCServer, billingService)
@@ -69,7 +70,7 @@ func (a *App) MustRun() {
 	}
 }
 
-// Run runs gRPC server.
+// Runs gRPC server.
 func (a *App) Run() error {
 	const op = "grpc.Run"
 
@@ -87,7 +88,7 @@ func (a *App) Run() error {
 	return nil
 }
 
-// Stop stops gRPC server.
+// Stops gRPC server.
 func (a *App) Stop() {
 	const op = "grpc.Stop"
 
