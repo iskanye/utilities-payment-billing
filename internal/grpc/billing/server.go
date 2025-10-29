@@ -21,10 +21,11 @@ type Billing interface {
 		ctx context.Context,
 		address string,
 		amount int,
+		userID int64,
 	) (int64, error)
 	GetBills(
 		ctx context.Context,
-		address string,
+		userID int64,
 	) ([]models.Bill, error)
 }
 
@@ -42,8 +43,11 @@ func (s *serverAPI) AddBill(
 	if in.Amount <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "amount must be positive")
 	}
+	if in.UserId == 0 {
+		return nil, status.Error(codes.InvalidArgument, "user_id is required")
+	}
 
-	billId, err := s.billing.AddBill(ctx, in.GetAddress(), int(in.GetAmount()))
+	billId, err := s.billing.AddBill(ctx, in.GetAddress(), int(in.GetAmount()), in.GetUserId())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -57,21 +61,24 @@ func (s *serverAPI) GetBills(
 	in *protoBilling.BillsRequest,
 	stream grpc.ServerStreamingServer[protoBilling.Bill],
 ) error {
-	if in.Address == "" {
-		return status.Error(codes.InvalidArgument, "address is required")
+	if in.UserId == 0 {
+		return status.Error(codes.InvalidArgument, "user_id is required")
 	}
 
-	bills, err := s.billing.GetBills(stream.Context(), in.GetAddress())
+	bills, err := s.billing.GetBills(stream.Context(), in.GetUserId())
 	if err != nil {
 		return status.Error(codes.Internal, err.Error())
 	}
 
 	for _, i := range bills {
 		id := i.ID
+		dueDate := i.DueDate
 		bill := &protoBilling.Bill{
 			BillId:  &id,
 			Address: i.Address,
 			Amount:  int32(i.Amount),
+			UserId:  i.UserID,
+			DueDate: &dueDate,
 		}
 		if err = stream.SendMsg(bill); err != nil {
 			return status.Error(codes.Internal, err.Error())

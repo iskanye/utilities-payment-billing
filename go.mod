@@ -6,8 +6,8 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/golang-migrate/migrate/v4 v4.19.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
-	github.com/iskanye/utilities-payment v0.0.0-20251028123647-6a69b1318c4b
-	github.com/iskanye/utilities-payment-proto v0.0.0-20251028222752-6ed11e8274ae
+	github.com/iskanye/utilities-payment v0.0.0-20251029070330-ef12ec837c07
+	github.com/iskanye/utilities-payment-proto v0.0.0-20251029070123-4014e84a4488
 	github.com/lib/pq v1.10.9
 	github.com/stretchr/testify v1.10.0
 	google.golang.org/grpc v1.76.0

@@ -22,13 +22,14 @@ type BillCreator interface {
 		ctx context.Context,
 		address string,
 		amount int,
+		userID int64,
 	) (int64, error)
 }
 
 type BillsProvider interface {
 	GetBills(
 		ctx context.Context,
-		address string,
+		userID int64,
 	) ([]models.Bill, error)
 }
 
@@ -48,6 +49,7 @@ func (b *Billing) AddBill(
 	ctx context.Context,
 	address string,
 	amount int,
+	userID int64,
 ) (int64, error) {
 	const op = "Billing.AddBill"
 
@@ -58,9 +60,9 @@ func (b *Billing) AddBill(
 
 	log.Info("attempting to create bill")
 
-	billId, err := b.billCreator.CreateBill(ctx, address, amount)
+	billId, err := b.billCreator.CreateBill(ctx, address, amount, userID)
 	if err != nil {
-		log.Error("failed to create bill: ", logger.Err(err))
+		log.Error("failed to create bill", logger.Err(err))
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -73,25 +75,25 @@ func (b *Billing) AddBill(
 
 func (b *Billing) GetBills(
 	ctx context.Context,
-	address string,
+	userID int64,
 ) ([]models.Bill, error) {
 	const op = "Billing.GetBills"
 
 	log := b.log.With(
 		slog.String("op", op),
-		slog.String("address", address),
+		slog.Int64("user_id", userID),
 	)
 
 	log.Info("attempting to get bill")
 
-	bills, err := b.billsProvider.GetBills(ctx, address)
+	bills, err := b.billsProvider.GetBills(ctx, userID)
 	if err != nil {
 		if errors.Is(err, storage.ErrBillsNotFound) {
-			log.Warn("bills not found: ", logger.Err(err))
+			log.Warn("bills not found", logger.Err(err))
 			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
-		log.Error("failed to get bill: ", logger.Err(err))
+		log.Error("failed to get bill", logger.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
