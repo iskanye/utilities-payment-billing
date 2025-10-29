@@ -15,7 +15,6 @@ import (
 )
 
 type Suite struct {
-	*testing.T                          // Потребуется для вызова методов *testing.T внутри Suite
 	Cfg           *config.Config        // Конфигурация приложения
 	BillingClient billing.BillingClient // Клиент для взаимодействия с gRPC-сервером
 }
@@ -48,7 +47,6 @@ func New(t *testing.T) (context.Context, *Suite) {
 	}
 
 	return ctx, &Suite{
-		T:             t,
 		Cfg:           cfg,
 		BillingClient: billing.NewBillingClient(cc),
 	}
