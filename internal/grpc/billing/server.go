@@ -27,6 +27,10 @@ type Billing interface {
 		ctx context.Context,
 		userID int64,
 	) ([]models.Bill, error)
+	PayBill(
+		ctx context.Context,
+		billId int64,
+	) error
 }
 
 func Register(gRPCServer *grpc.Server, billing Billing) {
@@ -86,4 +90,20 @@ func (s *serverAPI) GetBills(
 	}
 
 	return nil
+}
+
+func (s *serverAPI) PayBill(
+	ctx context.Context,
+	in *protoBilling.PayRequest,
+) (*protoBilling.PayResponse, error) {
+	if in.BillId == 0 {
+		return nil, status.Error(codes.InvalidArgument, "bill_id is required")
+	}
+
+	err := s.billing.PayBill(ctx, in.GetBillId())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &protoBilling.PayResponse{}, nil
 }

@@ -15,6 +15,7 @@ type Billing struct {
 	log           *slog.Logger
 	billCreator   BillCreator
 	billsProvider BillsProvider
+	billPayer     BillPayer
 }
 
 type BillCreator interface {
@@ -33,15 +34,24 @@ type BillsProvider interface {
 	) ([]models.Bill, error)
 }
 
+type BillPayer interface {
+	PayBill(
+		ctx context.Context,
+		billId int64,
+	) error
+}
+
 func New(
 	log *slog.Logger,
 	billCreator BillCreator,
 	billsProvider BillsProvider,
+	billPayer BillPayer,
 ) *Billing {
 	return &Billing{
 		log:           log,
 		billCreator:   billCreator,
 		billsProvider: billsProvider,
+		billPayer:     billPayer,
 	}
 }
 
@@ -88,11 +98,6 @@ func (b *Billing) GetBills(
 
 	bills, err := b.billsProvider.GetBills(ctx, userID)
 	if err != nil {
-		if errors.Is(err, storage.ErrBillsNotFound) {
-			log.Warn("bills not found", logger.Err(err))
-			return nil, fmt.Errorf("%s: %w", op, err)
-		}
-
 		log.Error("failed to get bill", logger.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -100,4 +105,33 @@ func (b *Billing) GetBills(
 	log.Info("successfully got bills")
 
 	return bills, nil
+}
+
+func (b *Billing) PayBill(
+	ctx context.Context,
+	billId int64,
+) error {
+	const op = "Billing.PayBill"
+
+	log := b.log.With(
+		slog.String("op", op),
+		slog.Int64("bill_id", billId),
+	)
+
+	log.Info("attempting to pay the bill")
+
+	err := b.billPayer.PayBill(ctx, billId)
+	if err != nil {
+		if errors.Is(err, storage.ErrBillNotFound) {
+			log.Warn("bill not found", logger.Err(err))
+			return fmt.Errorf("%s: %w", op, err)
+		}
+
+		log.Error("failed to get bill", logger.Err(err))
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	log.Info("successfully payed the bill")
+
+	return nil
 }

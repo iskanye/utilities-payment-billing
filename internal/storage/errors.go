@@ -2,4 +2,4 @@ package storage
 
 import "errors"
 
-var ErrBillsNotFound = errors.New("bills not found")
+var ErrBillNotFound = errors.New("bill not found")

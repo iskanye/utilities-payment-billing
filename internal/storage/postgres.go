@@ -90,9 +90,6 @@ func (s *Storage) GetBills(
 		var bill models.Bill
 		err = rows.Scan(&bill.ID, &bill.Address, &bill.Amount, &bill.UserID, &bill.DueDate)
 		if err != nil {
-			if errors.Is(err, sql.ErrNoRows) {
-				return nil, fmt.Errorf("%s: %w", op, ErrBillsNotFound)
-			}
 			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
@@ -100,4 +97,31 @@ func (s *Storage) GetBills(
 	}
 
 	return bills, nil
+}
+
+func (s *Storage) PayBill(
+	ctx context.Context,
+	billId int64,
+) error {
+	const op = "storage.postgres.PayBill"
+
+	stmt, err := s.db.Prepare("DELETE FROM bills WHERE id = $1;")
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	res := stmt.QueryRowContext(ctx, billId)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if err = res.Err(); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("%s: %w", op, ErrBillNotFound)
+		}
+
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
 }
