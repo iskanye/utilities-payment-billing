@@ -1,9 +1,0 @@
-postgre:
-  port: 5432
-  user: "postgres"
-  password: "postgres"
-  db_name: "postgres"
-grpc:
-  port: 44080
-  timeout: 5s
-term: 1
