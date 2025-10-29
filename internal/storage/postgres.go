@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
 	"time"
 
@@ -110,17 +109,18 @@ func (s *Storage) PayBill(
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	res := stmt.QueryRowContext(ctx, billId)
+	res, err := stmt.ExecContext(ctx, billId)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	if err = res.Err(); err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return fmt.Errorf("%s: %w", op, ErrBillNotFound)
-		}
-
+	rows, err := res.RowsAffected()
+	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if rows == 0 {
+		return fmt.Errorf("%s: %w", op, ErrBillNotFound)
 	}
 
 	return nil

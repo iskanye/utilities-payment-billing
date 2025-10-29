@@ -13,14 +13,14 @@ import (
 )
 
 const (
-	deltaDay = 60 * 60 * 24
+	deltaDay = 86400
 )
 
 func amount() int32 {
 	return int32(gofakeit.Number(0, 1000000))
 }
 
-func userID() int64 {
+func id() int64 {
 	return int64(gofakeit.Number(1, 100000))
 }
 
@@ -36,7 +36,7 @@ func TestCreateBill_Success(t *testing.T) {
 
 	address := gofakeit.Address().Address
 	amount := amount()
-	userID := userID()
+	userID := id()
 
 	respBill, err := s.BillingClient.AddBill(ctx, &billing.Bill{
 		Address: address,
@@ -76,7 +76,7 @@ func TestCreateBill_Dublicates(t *testing.T) {
 
 	address := gofakeit.Address().Address
 	amount := amount()
-	userID := userID()
+	userID := id()
 	var ids []int64
 
 	respBill, err := s.BillingClient.AddBill(ctx, &billing.Bill{
@@ -146,21 +146,21 @@ func TestCreateBill_FailCases(t *testing.T) {
 			name:        "CreateBill with no address",
 			address:     "",
 			amount:      amount(),
-			userID:      userID(),
+			userID:      id(),
 			expectedErr: "address is required",
 		},
 		{
 			name:        "CreateBill with zero amount",
 			address:     gofakeit.Address().Address,
 			amount:      0,
-			userID:      userID(),
+			userID:      id(),
 			expectedErr: "amount must be positive",
 		},
 		{
 			name:        "CreateBill with negative amount",
 			address:     gofakeit.Address().Address,
 			amount:      -1000,
-			userID:      userID(),
+			userID:      id(),
 			expectedErr: "amount must be positive",
 		},
 		{
@@ -191,4 +191,35 @@ func TestCreateBill_FailCases(t *testing.T) {
 			require.Contains(t, err.Error(), tt.expectedErr)
 		})
 	}
+}
+
+func TestPayBill_Success(t *testing.T) {
+	ctx, s := suite.New(t)
+
+	address := gofakeit.Address().Address
+	amount := amount()
+	userID := id()
+
+	respBill, err := s.BillingClient.AddBill(ctx, &billing.Bill{
+		Address: address,
+		Amount:  amount,
+		UserId:  userID,
+	})
+
+	require.NoError(t, err)
+	assert.NotEmpty(t, respBill)
+
+	_, err = s.BillingClient.PayBill(ctx, &billing.PayRequest{
+		BillId: respBill.GetBillId(),
+	})
+	require.NoError(t, err)
+}
+
+func TestPayBill_NonExistingBill(t *testing.T) {
+	ctx, s := suite.New(t)
+
+	_, err := s.BillingClient.PayBill(ctx, &billing.PayRequest{
+		BillId: id(),
+	})
+	require.Contains(t, err.Error(), "bill not found")
 }
