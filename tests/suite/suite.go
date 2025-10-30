@@ -30,7 +30,7 @@ func New(t *testing.T) (context.Context, *Suite) {
 	t.Helper()
 	t.Parallel()
 
-	cfg := pkgConfig.MustLoadPath(configPath(), func(t *config.Config) {})
+	cfg := pkgConfig.MustLoadPath[config.Config](configPath())
 
 	ctx, cancelCtx := context.WithTimeout(context.Background(), cfg.GRPC.Timeout)
 

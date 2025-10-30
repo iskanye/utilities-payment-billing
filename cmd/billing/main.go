@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	cfg := pkgConfig.MustLoad[config.Config](pkgConfig.NoModyfing)
+	cfg := pkgConfig.MustLoad[config.Config]()
 	log := logger.SetupPrettySlog()
 	app := app.New(
 		log,

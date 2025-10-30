@@ -54,10 +54,14 @@ github.com/iskanye/utilities-payment v0.0.0-20251029070330-ef12ec837c07 h1:i608p
 github.com/iskanye/utilities-payment v0.0.0-20251029070330-ef12ec837c07/go.mod h1:4+J0gZDB0fUHrjnA9RGcn35qkOTyhiFSrAa/qjQC/4Y=
 github.com/iskanye/utilities-payment v0.0.0-20251029182649-6867822173de h1:hv7bya4001RWJUPufqDWwa3VwBiPnn37LYUPYHKgNGM=
 github.com/iskanye/utilities-payment v0.0.0-20251029182649-6867822173de/go.mod h1:4+J0gZDB0fUHrjnA9RGcn35qkOTyhiFSrAa/qjQC/4Y=
+github.com/iskanye/utilities-payment v0.0.0-20251030012307-f62fb70d15e5 h1:ZmrnABy/3bgMJf4ivrR6A8hT49+EX98RGNrjAIN4tLQ=
+github.com/iskanye/utilities-payment v0.0.0-20251030012307-f62fb70d15e5/go.mod h1:4+J0gZDB0fUHrjnA9RGcn35qkOTyhiFSrAa/qjQC/4Y=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251029070123-4014e84a4488 h1:5jBGo3NdE0QlBVDCwqQfgisfQf4iLJNFmJ479EAy2JI=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251029070123-4014e84a4488/go.mod h1:hKPGYIReUPlwbsc6EyNvA4df412VbRomMQ6eSFEzsH4=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251029211155-eaee42ea8aca h1:d/+PxMeyWoD9hFwk0ErizJV4NEJqIFMFW0btHtTlsq0=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251029211155-eaee42ea8aca/go.mod h1:hKPGYIReUPlwbsc6EyNvA4df412VbRomMQ6eSFEzsH4=
+github.com/iskanye/utilities-payment-proto v0.0.0-20251029221708-c656c428185f h1:9wGqdCpPvQDkIKPQX8l25hRX4Oir4+CobZpe58WN6Fk=
+github.com/iskanye/utilities-payment-proto v0.0.0-20251029221708-c656c428185f/go.mod h1:Y80c5i/ywsTgICyJyE67aWU1CtSsdF7g1nqAYXXPFxs=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
