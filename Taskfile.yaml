@@ -17,10 +17,10 @@ tasks:
     aliases:
       - db
     cmds:
-      - go run ./cmd/migrator --uri="postgres:postgres@localhost:5432/postgres" --migrations-path=migrations 
+      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/postgres --migrations-path=migrations 
   test_db:
     cmds:
-      - go run ./cmd/migrator --uri="postgres:postgres@localhost:5432/tests" --migrations-path=migrations 
+      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/tests --migrations-path=migrations 
 
   test:
     deps:
