@@ -64,6 +64,8 @@ github.com/iskanye/utilities-payment-proto v0.0.0-20251029221708-c656c428185f h1
 github.com/iskanye/utilities-payment-proto v0.0.0-20251029221708-c656c428185f/go.mod h1:Y80c5i/ywsTgICyJyE67aWU1CtSsdF7g1nqAYXXPFxs=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251030113237-b6b89f50efa6 h1:rEkmaY7iXv0T+OvAq07uowSzJchJcshTpZbUmZ6j+xk=
 github.com/iskanye/utilities-payment-proto v0.0.0-20251030113237-b6b89f50efa6/go.mod h1:Y80c5i/ywsTgICyJyE67aWU1CtSsdF7g1nqAYXXPFxs=
+github.com/iskanye/utilities-payment-proto v0.1.0 h1:L9fPGQ7dPPIDwYEwbeU7bTSquSyiKpC9rHi/2jFBfMw=
+github.com/iskanye/utilities-payment-proto v0.1.0/go.mod h1:Y80c5i/ywsTgICyJyE67aWU1CtSsdF7g1nqAYXXPFxs=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
