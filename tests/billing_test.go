@@ -38,37 +38,28 @@ func TestCreateBill_Success(t *testing.T) {
 	amount := amount()
 	userID := id()
 
-	respBill, err := s.BillingClient.AddBill(ctx, &billing.Bill{
+	addBillResp, err := s.BillingClient.AddBill(ctx, &billing.Bill{
 		Address: address,
 		Amount:  amount,
 		UserId:  userID,
 	})
 
 	require.NoError(t, err)
-	assert.NotEmpty(t, respBill)
+	assert.NotEmpty(t, addBillResp)
 
-	respBills, err := s.BillingClient.GetBills(ctx, &billing.BillsRequest{
-		UserId: userID,
+	getBillResp, err := s.BillingClient.GetBill(ctx, &billing.BillRequest{
+		BillId: addBillResp.GetBillId(),
 	})
 
 	require.NoError(t, err)
-	assert.NotEmpty(t, respBill)
+	assert.NotEmpty(t, addBillResp)
 
-	for {
-		bill, err := respBills.Recv()
-		if err == io.EOF {
-			break
-		}
-		require.NoError(t, err)
-		require.NotEmpty(t, bill)
+	assert.Equal(t, addBillResp.GetBillId(), getBillResp.GetBillId())
+	assert.Equal(t, address, getBillResp.GetAddress())
+	assert.Equal(t, amount, getBillResp.GetAmount())
+	assert.Equal(t, userID, getBillResp.GetUserId())
 
-		assert.Equal(t, respBill.GetBillId(), bill.GetBillId())
-		assert.Equal(t, address, bill.GetAddress())
-		assert.Equal(t, amount, bill.GetAmount())
-		assert.Equal(t, userID, bill.GetUserId())
-
-		CheckDueDate(t, s, bill.GetDueDate())
-	}
+	CheckDueDate(t, s, getBillResp.GetDueDate())
 }
 
 func TestCreateBill_Dublicates(t *testing.T) {
