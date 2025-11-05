@@ -27,6 +27,10 @@ type Billing interface {
 		ctx context.Context,
 		userID int64,
 	) ([]models.Bill, error)
+	GetBill(
+		ctx context.Context,
+		billID int64,
+	) (models.Bill, error)
 	PayBill(
 		ctx context.Context,
 		billId int64,
@@ -90,6 +94,30 @@ func (s *serverAPI) GetBills(
 	}
 
 	return nil
+}
+
+func (s *serverAPI) GetBill(
+	ctx context.Context,
+	in *protoBilling.BillRequest,
+) (*protoBilling.Bill, error) {
+	if in.BillId == 0 {
+		return nil, status.Error(codes.InvalidArgument, "bill_id is required")
+	}
+
+	bill, err := s.billing.GetBill(ctx, in.GetBillId())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	id := bill.ID
+	dueDate := bill.DueDate
+	return &protoBilling.Bill{
+		BillId:  &id,
+		Address: bill.Address,
+		Amount:  int32(bill.Amount),
+		UserId:  bill.UserID,
+		DueDate: &dueDate,
+	}, nil
 }
 
 func (s *serverAPI) PayBill(

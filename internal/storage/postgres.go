@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
@@ -96,6 +97,32 @@ func (s *Storage) GetBills(
 	}
 
 	return bills, nil
+}
+
+func (s *Storage) GetBill(
+	ctx context.Context,
+	billID int64,
+) (models.Bill, error) {
+	const op = "storage.postgres.GetBill"
+
+	stmt, err := s.db.Prepare("SELECT id, address, amount, user_id, due_date FROM bills WHERE id = $1;")
+	if err != nil {
+		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+	}
+
+	row := stmt.QueryRowContext(ctx, billID)
+
+	var bill models.Bill
+	err = row.Scan(&bill.ID, &bill.Address, &bill.Amount, &bill.UserID, &bill.DueDate)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.Bill{}, fmt.Errorf("%s: %w", op, ErrBillNotFound)
+		}
+
+		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return bill, nil
 }
 
 func (s *Storage) PayBill(

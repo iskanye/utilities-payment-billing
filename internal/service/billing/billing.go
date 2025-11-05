@@ -28,6 +28,10 @@ type BillCreator interface {
 }
 
 type BillsProvider interface {
+	GetBill(
+		ctx context.Context,
+		billID int64,
+	) (models.Bill, error)
 	GetBills(
 		ctx context.Context,
 		userID int64,
@@ -94,17 +98,41 @@ func (b *Billing) GetBills(
 		slog.Int64("user_id", userID),
 	)
 
-	log.Info("attempting to get bill")
+	log.Info("attempting to get bills")
 
 	bills, err := b.billsProvider.GetBills(ctx, userID)
 	if err != nil {
-		log.Error("failed to get bill", logger.Err(err))
+		log.Error("failed to get bills", logger.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
 	log.Info("successfully got bills")
 
 	return bills, nil
+}
+
+func (b *Billing) GetBill(
+	ctx context.Context,
+	billID int64,
+) (models.Bill, error) {
+	const op = "Billing.GetBill"
+
+	log := b.log.With(
+		slog.String("op", op),
+		slog.Int64("bill_id", billID),
+	)
+
+	log.Info("attempting to get bill")
+
+	bill, err := b.billsProvider.GetBill(ctx, billID)
+	if err != nil {
+		log.Error("failed to get bill", logger.Err(err))
+		return models.Bill{}, fmt.Errorf("%s: %w", op, err)
+	}
+
+	log.Info("successfully got bill")
+
+	return bill, nil
 }
 
 func (b *Billing) PayBill(
