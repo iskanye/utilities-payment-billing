@@ -12,10 +12,12 @@ import (
 
 func main() {
 	var uri, migrationsPath, migrationsTable string
+	var clear bool
 
 	flag.StringVar(&uri, "uri", "", "uri to database")
 	flag.StringVar(&migrationsPath, "migrations-path", "", "path to migrations")
 	flag.StringVar(&migrationsTable, "migrations-table", "migrations", "name of migrations table")
+	flag.BoolVar(&clear, "clear", false, "use down migrations")
 	flag.Parse()
 
 	if uri == "" {
@@ -32,8 +34,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	if clear {
+		mustMigrate(m.Down())
+	} else {
+		mustMigrate(m.Up())
+	}
 
-	if err := m.Up(); err != nil {
+	fmt.Println("migrations applied")
+}
+
+func mustMigrate(err error) {
+	if err != nil {
 		if errors.Is(err, migrate.ErrNoChange) {
 			fmt.Println("no migrations to apply")
 			return
@@ -41,6 +52,4 @@ func main() {
 
 		panic(err)
 	}
-
-	fmt.Println("migrations applied")
 }

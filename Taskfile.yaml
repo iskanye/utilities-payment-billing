@@ -20,6 +20,7 @@ tasks:
       - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/postgres --migrations-path=migrations 
   test_db:
     cmds:
+      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/tests --migrations-path=migrations --clear
       - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/tests --migrations-path=migrations 
 
   test:
