@@ -7,8 +7,8 @@ import (
 	"log/slog"
 
 	"github.com/iskanye/utilities-payment-billing/internal/storage"
-	"github.com/iskanye/utilities-payment/pkg/logger"
-	"github.com/iskanye/utilities-payment/pkg/models"
+	"github.com/iskanye/utilities-payment-utils/pkg/logger"
+	"github.com/iskanye/utilities-payment-utils/pkg/models"
 )
 
 type Billing struct {

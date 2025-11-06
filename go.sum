@@ -50,10 +50,10 @@ github.com/hashicorp/go-multierror v1.1.1 h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+l
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
 github.com/ilyakaznacheev/cleanenv v1.5.0 h1:0VNZXggJE2OYdXE87bfSSwGxeiGt9moSR2lOrsHHvr4=
 github.com/ilyakaznacheev/cleanenv v1.5.0/go.mod h1:a5aDzaJrLCQZsazHol1w8InnDcOX0OColm64SlIi6gk=
-github.com/iskanye/utilities-payment v0.0.0-20251105123748-7de6181755be h1:tKQDBo76H+Xfd0TTSL7oLLgmE+e7gP04beXmPD1xqo8=
-github.com/iskanye/utilities-payment v0.0.0-20251105123748-7de6181755be/go.mod h1:4+J0gZDB0fUHrjnA9RGcn35qkOTyhiFSrAa/qjQC/4Y=
 github.com/iskanye/utilities-payment-proto v0.1.1 h1:u8/+UBZB0K8mgnF1O3wNhW/QSWPGTjfIu7+FJH91+ug=
 github.com/iskanye/utilities-payment-proto v0.1.1/go.mod h1:Y80c5i/ywsTgICyJyE67aWU1CtSsdF7g1nqAYXXPFxs=
+github.com/iskanye/utilities-payment-utils v0.1.1 h1:G5Zu11PmxRkG7M6MpIXmzJBrgtXUJOX6rmNPZDtBdDQ=
+github.com/iskanye/utilities-payment-utils v0.1.1/go.mod h1:Kq9mbHoCGy8gdm+2+GEcg62Hn7KnIKbyUQgluz1EsrA=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=

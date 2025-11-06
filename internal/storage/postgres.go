@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/iskanye/utilities-payment/pkg/models"
+	"github.com/iskanye/utilities-payment-utils/pkg/models"
 	_ "github.com/lib/pq"
 )
 

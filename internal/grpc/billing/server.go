@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	protoBilling "github.com/iskanye/utilities-payment-proto/billing"
-	"github.com/iskanye/utilities-payment/pkg/models"
+	"github.com/iskanye/utilities-payment-utils/pkg/models"
 )
 
 type serverAPI struct {
