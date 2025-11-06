@@ -15,7 +15,5 @@ COPY --from=builder /bin/billing ./
 COPY --from=builder /bin/migrator ./
 COPY --from=builder /app/config ./config
 COPY --from=builder /app/migrations ./migrations
-RUN mkdir storage
-RUN ./migrator --uri=postgres:postgres@localhost:5430/postgres --migrations-path=./migrations
-ENTRYPOINT ["./billing"]
-CMD ["-config", "./config/dev.yaml"]
+COPY --from=builder /app/docker-entrypoint.sh ./
+ENTRYPOINT ["/bin/sh", "./docker-entrypoint.sh"]
