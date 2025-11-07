@@ -27,7 +27,7 @@ func New(
 	const op = "storage.postgres.New"
 
 	connStr := fmt.Sprintf(
-		"host=%s post=%d user=%s password=%s dbname=%s sslmode=disable",
+		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbName,
 	)
 	db, err := sql.Open("postgres", connStr)
