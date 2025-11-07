@@ -13,6 +13,14 @@ import (
 )
 
 func main() {
+	var migrationsPath, migrationsTable string
+	var clear bool
+
+	flag.StringVar(&migrationsPath, "migrations-path", "", "path to migrations")
+	flag.StringVar(&migrationsTable, "migrations-table", "migrations", "name of migrations table")
+	flag.BoolVar(&clear, "clear", false, "use down migrations")
+	flag.Parse()
+
 	cfg := pkgConfig.MustLoad[config.Config]()
 
 	uri := fmt.Sprintf("%s:%s@%s:%d/%s",
@@ -23,17 +31,6 @@ func main() {
 		cfg.Postgres.DBName,
 	)
 
-	var migrationsPath, migrationsTable string
-	var clear bool
-
-	flag.StringVar(&migrationsPath, "migrations-path", "", "path to migrations")
-	flag.StringVar(&migrationsTable, "migrations-table", "migrations", "name of migrations table")
-	flag.BoolVar(&clear, "clear", false, "use down migrations")
-	flag.Parse()
-
-	if uri == "" {
-		panic("uri is required")
-	}
 	if migrationsPath == "" {
 		panic("migrations-path is required")
 	}

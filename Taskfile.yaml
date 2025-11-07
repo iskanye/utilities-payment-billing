@@ -14,14 +14,18 @@ tasks:
       - go run ./cmd/billing --config=./config/dev.yaml
 
   init_db:
+    env:
+      CONFIG_PATH: ./config/dev.yaml
     aliases:
       - db
     cmds:
-      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/postgres --migrations-path=migrations 
+      - go run ./cmd/migrator --migrations-path=migrations 
   test_db:
+    env:
+      CONFIG_PATH: ./config/tests.yaml
     cmds:
-      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/tests --migrations-path=migrations --clear
-      - go run ./cmd/migrator --uri=postgres:postgres@localhost:5432/tests --migrations-path=migrations 
+      - go run ./cmd/migrator --migrations-path=migrations --clear
+      - go run ./cmd/migrator --migrations-path=migrations 
 
   test:
     deps:
