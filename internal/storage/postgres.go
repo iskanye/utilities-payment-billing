@@ -17,6 +17,8 @@ type Storage struct {
 }
 
 func New(
+	host string,
+	port int,
 	user string,
 	password string,
 	dbName string,
@@ -25,8 +27,8 @@ func New(
 	const op = "storage.postgres.New"
 
 	connStr := fmt.Sprintf(
-		"user=%s password=%s dbname=%s sslmode=disable",
-		user, password, dbName,
+		"host=%s post=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbName,
 	)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {

@@ -14,13 +14,15 @@ type App struct {
 
 func New(
 	log *slog.Logger,
-	user string,
-	password string,
+	dbHost string,
+	dbPort int,
+	dbUser string,
+	dbPassword string,
 	dbName string,
 	term int,
 	grpcPort int,
 ) *App {
-	storage, err := storage.New(user, password, dbName, term)
+	storage, err := storage.New(dbHost, dbPort, dbUser, dbPassword, dbName, term)
 	if err != nil {
 		panic(err)
 	}

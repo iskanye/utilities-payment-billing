@@ -16,9 +16,11 @@ func main() {
 	log := logger.SetupPrettySlog()
 	app := app.New(
 		log,
-		cfg.Postgre.User,
-		cfg.Postgre.Password,
-		cfg.Postgre.DBName,
+		cfg.Postgres.Host,
+		cfg.Postgres.Port,
+		cfg.Postgres.User,
+		cfg.Postgres.Password,
+		cfg.Postgres.DBName,
 		cfg.Term,
 		cfg.GRPC.Port,
 	)

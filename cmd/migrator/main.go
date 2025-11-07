@@ -8,13 +8,24 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/iskanye/utilities-payment-billing/internal/config"
+	pkgConfig "github.com/iskanye/utilities-payment-utils/pkg/config"
 )
 
 func main() {
-	var uri, migrationsPath, migrationsTable string
+	cfg := pkgConfig.MustLoad[config.Config]()
+
+	uri := fmt.Sprintf("%s:%s@%s:%d/%s",
+		cfg.Postgres.User,
+		cfg.Postgres.Password,
+		cfg.Postgres.Host,
+		cfg.Postgres.Port,
+		cfg.Postgres.DBName,
+	)
+
+	var migrationsPath, migrationsTable string
 	var clear bool
 
-	flag.StringVar(&uri, "uri", "", "uri to database")
 	flag.StringVar(&migrationsPath, "migrations-path", "", "path to migrations")
 	flag.StringVar(&migrationsTable, "migrations-table", "migrations", "name of migrations table")
 	flag.BoolVar(&clear, "clear", false, "use down migrations")
