@@ -42,13 +42,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	if clear {
 		mustMigrate(m.Down())
 	} else {
 		mustMigrate(m.Up())
 	}
-
-	fmt.Println("migrations applied")
 }
 
 func mustMigrate(err error) {
@@ -60,4 +59,6 @@ func mustMigrate(err error) {
 
 		panic(err)
 	}
+
+	fmt.Println("migrations applied")
 }
