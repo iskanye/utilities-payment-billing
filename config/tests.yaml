@@ -1,0 +1,6 @@
+postgres:
+  port: 5432
+grpc:
+  port: 44080
+  timeout: 5s
+term: 1

@@ -1,6 +1,9 @@
 package config
 
-import "time"
+import (
+	"os"
+	"time"
+)
 
 type Config struct {
 	Postgres PostgresConfig `yaml:"postgres"`
@@ -19,4 +22,10 @@ type PostgresConfig struct {
 type GRPCConfig struct {
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
+}
+
+func (c *Config) LoadEnv() {
+	c.Postgres.User = os.Getenv("POSTGRES_USER")
+	c.Postgres.Password = os.Getenv("POSTGRES_PASSWORD")
+	c.Postgres.DBName = os.Getenv("POSTGRES_DB")
 }

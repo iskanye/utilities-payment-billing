@@ -13,6 +13,8 @@ import (
 
 func main() {
 	cfg := pkgConfig.MustLoad[config.Config]()
+	cfg.LoadEnv()
+
 	log := logger.SetupPrettySlog()
 	app := app.New(
 		log,
