@@ -12,6 +12,7 @@ jobs:
       POSTGRES_DB: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      CONFIG_PATH: ./config/tests.yaml
 
     services:
       postgres:
@@ -48,7 +49,7 @@ jobs:
 
       - name: Run service
         run: |
-          nohup ./billing --config=./config/tests.yaml &
+          nohup ./billing &
 
       - name: Run tests
         run: go test -v ./tests
