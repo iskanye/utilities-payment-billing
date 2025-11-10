@@ -12,7 +12,6 @@ jobs:
       POSTGRES_DB: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      CONFIG_PATH: ./config/tests.yaml
 
     services:
       postgres:
@@ -45,11 +44,11 @@ jobs:
           go build -o ./billing ./cmd/billing
       - name: Set up database
         run: |
-          go run ./cmd/migrator --migrations-path=./migrations
+          go run ./cmd/migrator --config=./config/tests.yaml --migrations-path=./migrations
 
       - name: Run service
         run: |
-          nohup ./billing &
+          nohup ./billing --config=./config/tests.yaml &
 
       - name: Run tests
         run: go test -v ./tests
