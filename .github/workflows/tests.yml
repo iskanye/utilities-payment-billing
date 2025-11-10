@@ -41,14 +41,14 @@ jobs:
 
       - name: Build service
         run: |
-          go build -o ./billling ./cmd/billling
+          go build -o ./billing ./cmd/billing
       - name: Set up database
         run: |
           go run ./cmd/migrator --migrations-path=./migrations
 
       - name: Run service
         run: |
-          nohup ./billling --config=./config/tests.yaml &
+          nohup ./billing --config=./config/tests.yaml &
 
       - name: Run tests
         run: go test -v ./tests
