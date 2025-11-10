@@ -16,12 +16,23 @@ const (
 	deltaDay = 86400
 )
 
+var userIDs map[int64]struct{}
+
 func amount() int32 {
 	return int32(gofakeit.Number(0, 1000000))
 }
 
 func id() int64 {
-	return int64(gofakeit.Number(1, 100000))
+	id := int64(gofakeit.Number(1, 100000))
+	_, ok := userIDs[id]
+
+	for ok {
+		id = int64(gofakeit.Number(1, 100000))
+		_, ok = userIDs[id]
+	}
+
+	userIDs[id] = struct{}{}
+	return id
 }
 
 func CheckDueDate(t *testing.T, s *suite.Suite, dueDate string) {
