@@ -22,6 +22,7 @@ func main() {
 	flag.Parse()
 
 	cfg := pkgConfig.MustLoad[config.Config]()
+	cfg.LoadEnv()
 
 	uri := fmt.Sprintf("%s:%s@%s:%d/%s",
 		cfg.Postgres.User,
