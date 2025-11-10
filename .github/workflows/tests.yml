@@ -44,6 +44,7 @@ jobs:
           go build -o ./billing ./cmd/billing
       - name: Set up database
         run: |
+          go run ./cmd/migrator --config=./config/tests.yaml --migrations-path=./migrations --clear
           go run ./cmd/migrator --config=./config/tests.yaml --migrations-path=./migrations
 
       - name: Run service
