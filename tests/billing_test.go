@@ -16,7 +16,7 @@ const (
 	deltaDay = 86400
 )
 
-var userIDs map[int64]struct{}
+var userIDs = make(map[int64]struct{})
 
 func amount() int32 {
 	return int32(gofakeit.Number(0, 1000000))
