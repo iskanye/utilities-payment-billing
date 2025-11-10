@@ -13,15 +13,17 @@ import (
 )
 
 func main() {
-	var migrationsPath, migrationsTable string
+	var configPath, migrationsPath, migrationsTable string
 	var clear bool
 
+	flag.StringVar(&configPath, "config", "", "path to config")
 	flag.StringVar(&migrationsPath, "migrations-path", "", "path to migrations")
 	flag.StringVar(&migrationsTable, "migrations-table", "migrations", "name of migrations table")
 	flag.BoolVar(&clear, "clear", false, "use down migrations")
 	flag.Parse()
 
-	cfg := pkgConfig.MustLoad[config.Config]()
+	cfg := pkgConfig.MustLoadPath[config.Config](configPath)
+	cfg.LoadEnv()
 
 	uri := fmt.Sprintf("%s:%s@%s:%d/%s",
 		cfg.Postgres.User,
